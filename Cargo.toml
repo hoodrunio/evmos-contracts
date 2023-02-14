@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "smart-contract-verifier",
+    "smart-contract-verifier-http",
+    "smart-contract-verifier-proto",
+    "smart-contract-verifier-server",
+    "sig-provider-extension",
+]
