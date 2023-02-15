@@ -8,6 +8,9 @@ keywords = ["ethereum", "web3", "solidity"]
 
 [dependencies]
 smart-contract-verifier = { path = "../smart-contract-verifier" }
+mongodb = "2.1"
+bson = { version = "2", features = ["chrono-0_4"] } 
+chrono = "0.4" # Used for setting DateTimes
 
 actix-web = "=4.1"
 actix-web-prom = "0.6"
