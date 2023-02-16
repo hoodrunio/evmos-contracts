@@ -21,7 +21,7 @@ impl DB {
         // Load the MongoDB connection string
         let client_uri = "mongodb://127.0.0.1:27017";
 
-        DatabaseTR {
+        DB {
             mongo: (Client::with_uri_str(client_uri).await.expect("Cannot connect to MongoDB instance.")),
             db_name: "unexpected_db".to_string(),
         }
