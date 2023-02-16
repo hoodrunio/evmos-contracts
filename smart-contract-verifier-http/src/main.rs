@@ -9,7 +9,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 //    let movies = client.database("sample_mflix").collection("movies");
 //    let insert_result = movies.insert_one(new_doc.clone(), None).await?;
 //    println!("New document ID: {}", insert_result.inserted_id);
-   let verify_database = DB::new();
+   let verify_database = DB::new().await;
    DB::change_name(verify_database, "evmos");
    DB::collection("verified_contract");
    init_logs(settings.jaeger.clone());
