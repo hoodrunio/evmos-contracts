@@ -12,7 +12,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
    let verify_database = DB::new().await;
    verify_database.change_name("evmos");
    let cvr = Contract_verify_response{
-      file_name: "hello.sol"
+      file_name: "hello.sol".to_string()
    };
    verify_database.add_contract_verify_response(cvr);
    init_logs(settings.jaeger.clone());
