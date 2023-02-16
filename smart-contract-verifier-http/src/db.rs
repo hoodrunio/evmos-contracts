@@ -1,7 +1,7 @@
 use mongodb::{Client, Database, Collection, options::{ClientOptions, ResolverConfig}};
 use chrono::{TimeZone, Utc};
 use mongodb::bson::doc;
-use smart_contract_verifier_http::{Contract};
+use smart_contract_verifier_http::{Contract}
 
 pub struct DB {
     /// The MongoDB client that works with a MongoDB instance.
