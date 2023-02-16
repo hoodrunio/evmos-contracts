@@ -10,8 +10,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
 //    let insert_result = movies.insert_one(new_doc.clone(), None).await?;
 //    println!("New document ID: {}", insert_result.inserted_id);
    let verify_database = DB::new().await;
-   verify_database.change_name(verify_database, "evmos");
-   verify_database.collection("verified_contract");
+   verify_database.change_name("evmos");
+
    init_logs(settings.jaeger.clone());
    run(settings).await?;
    
