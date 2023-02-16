@@ -1,5 +1,5 @@
 use anyhow::Context;
-use smart_contract_verifier_http::{init_logs, run, Settings, DB};
+use smart_contract_verifier_http::{init_logs, run, Settings, DB, Contract_verify_response};
 use std::error::Error;
 
 #[tokio::main]
@@ -11,7 +11,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
 //    println!("New document ID: {}", insert_result.inserted_id);
    let verify_database = DB::new().await;
    verify_database.change_name("evmos");
-
+   let cvr = Contract_verify_response{
+      file_name: "hello.sol"
+   }
+   verify_database.add_contract_verify_response(cvr);
    init_logs(settings.jaeger.clone());
    run(settings).await?;
    
