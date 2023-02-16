@@ -28,7 +28,7 @@ pub async fn verify(
     if let Ok(verification_success) = result {
         let response = VerificationResponse::ok(verification_success.into());
         metrics::count_verify_contract("solidity", &response.status, "multi-part");
-        println!("{}", response);
+        println!("{:?}", response.result.file_name);
         return Ok(Json(response));
     }
 
