@@ -4,7 +4,7 @@ use mongodb::bson::doc;
 use crate::verification_response::{VerificationResult};
 
 
-/// Define cvr from resposne of smart contract verification.
+/// Define cvr from result of smart contract verification.
 /// #Usage
 /// ```rs
 /// cvr_$type()
