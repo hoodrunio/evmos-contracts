@@ -11,7 +11,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 //    println!("New document ID: {}", insert_result.inserted_id);
    DB::new();
    DB::change_name("evmos");
-   DB:collection_name("verified_contract");
+   DB:collection("verified_contract");
    init_logs(settings.jaeger.clone());
    run(settings).await?;
    
