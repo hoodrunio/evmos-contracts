@@ -11,8 +11,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let settings = Settings::new().context("failed to parse config")?;
 
     // Load the MongoDB connection string from an environment variable:
-   let client_uri =
-      env::var("MONGODB_URI").expect("You must set the MONGODB_URI environment var!");
+   let client_uri = "mongodb://127.0.0.1:27017";
 
    // A Client is needed to connect to MongoDB:
    // An extra line of code to work around a DNS issue on Windows:
