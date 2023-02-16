@@ -1,7 +1,7 @@
 use mongodb::{Client, Database, Collection, options::{ClientOptions, ResolverConfig}};
 use chrono::{TimeZone, Utc};
 use mongodb::bson::doc;
-use crate::{Contract};
+use crate::contract_verify_response::{Contract_verify_response};
 
 pub struct DB {
     /// The MongoDB client that works with a MongoDB instance.
@@ -45,7 +45,7 @@ impl DB {
         self.mongo.database(&self.db_name)
     }   
 
-    fn collection(&self, collection_name: &str) -> Collection<Contract> {
+    fn collection(&self, collection_name: &str) -> Collection<Contract_verify_response> {
         self.db().collection(collection_name);
     }
 
