@@ -44,7 +44,7 @@ impl DB {
         self.mongo.database(&self.db_name)
     }   
 
-    fn collection(&self, collection_name: &str) -> Collection {
+    fn collection(&self, collection_name: &str) -> Collection<Contract> {
         self.db().collection(collection_name);
     }
 
