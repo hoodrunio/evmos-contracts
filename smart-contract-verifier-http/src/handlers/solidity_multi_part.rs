@@ -1,4 +1,4 @@
-use crate::{metrics, verification_response::VerificationResponse, DisplayBytes};
+use crate::{metrics, verification_response::VerificationResponse, verification_response::VerificationResult, DB, DisplayBytes};
 use actix_web::{error, web, web::Json};
 use ethers_solc::EvmVersion;
 use serde::Deserialize;
@@ -28,7 +28,13 @@ pub async fn verify(
     if let Ok(verification_success) = result {
         let response = VerificationResponse::ok(verification_success.into());
         metrics::count_verify_contract("solidity", &response.status, "multi-part");
+
+        let verify_database = DB::new().await;
+        let vd = verify_database.change_name("evmos");
+        let cvr = response.result;
+        vd.add_contract_verify_response(cvr).await;
         println!("{:?}", response.result);
+
         return Ok(Json(response));
     }
 

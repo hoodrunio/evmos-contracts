@@ -1,5 +1,5 @@
 use anyhow::Context;
-use smart_contract_verifier_http::{init_logs, run, Settings, DB, VerificationResult};
+use smart_contract_verifier_http::{init_logs, run, Settings};
 use std::error::Error;
 
 #[tokio::main]
@@ -9,12 +9,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 //    let movies = client.database("sample_mflix").collection("movies");
 //    let insert_result = movies.insert_one(new_doc.clone(), None).await?;
 //    println!("New document ID: {}", insert_result.inserted_id);
-   let verify_database = DB::new().await;
-   let vd = verify_database.change_name("evmos");
-   let cvr = VerificationResult{
-      file_name: "hello.sol".to_string()
-   };
-   vd.add_contract_verify_response(cvr).await;
+   
    init_logs(settings.jaeger.clone());
    run(settings).await?;
    
