@@ -46,7 +46,7 @@ impl DB {
     }   
 
     fn collection(&self, collection_name: &str) -> Collection<Contract_verify_response> {
-        self.db().collection(collection_name);
+        self.db().collection(collection_name)
     }
 
 }
