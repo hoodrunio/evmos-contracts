@@ -29,12 +29,21 @@ pub async fn verify(
         let response = VerificationResponse::ok(verification_success.into());
         metrics::count_verify_contract("solidity", &response.status, "multi-part");
 
+        //////////////////////////////////////////////////////////////////////////////
+        //////////// This is to record verification result to database ///////////////
+        //////////////////////////////////////////////////////////////////////////////
+
+        // Creation object of DB
         let verify_database = DB::new().await;
+        // Change name of current database from DB
         let vd = verify_database.change_name("evmos");
+        // Bring result of smart contract verification
         let cvr = response.result.clone().unwrap();
-        println!("{:?}", cvr);
+        // Add to database called 'evmos'
         vd.add_contract_verify_response(cvr).await;
 
+        ///////////////////////////////////// End ////////////////////////////////////
+        
         return Ok(Json(response));
     }
 
