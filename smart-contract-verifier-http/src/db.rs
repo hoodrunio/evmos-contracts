@@ -6,7 +6,7 @@ pub struct Contract {
     file_name: String
 }
 
-use crate::Contract;
+use Contract;
 
 pub struct DB {
     /// The MongoDB client that works with a MongoDB instance.
