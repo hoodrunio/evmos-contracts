@@ -33,8 +33,8 @@ impl DB {
     /// let db = database.get_db();
     /// ```
     fn db(&self) -> Database {
+        println!("success");
         self.mongo.database(&self.db_name);
-        print!("success");
     }   
 }
 
