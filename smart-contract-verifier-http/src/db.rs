@@ -3,7 +3,7 @@ use chrono::{TimeZone, Utc};
 use mongodb::bson::doc;
 
 pub struct Contract {
-    file_name: &str
+    file_name: String
 }
 
 pub struct DB {
