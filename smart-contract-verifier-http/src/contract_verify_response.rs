@@ -10,10 +10,10 @@ pub struct Contract_verify_response {
     pub constructor_arguments: String,
     pub optimization: bool,
     pub optimization_runs: String,
-    pub contract_libraries: {},
+    pub contract_libraries: Option<String>,
     pub abi: String,
-    pub sources: {},
-    pub compiler_settings: "",
+    pub sources: Option<Option<String>>,
+    pub compiler_settings: String,
     pub local_creation_input_parts: [],
     pub local_deployed_bytecode_parts: []
 }

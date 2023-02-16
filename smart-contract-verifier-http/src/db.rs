@@ -1,7 +1,7 @@
 use mongodb::{Client, Database, Collection, options::{ClientOptions, ResolverConfig}};
 use chrono::{TimeZone, Utc};
 use mongodb::bson::doc;
-use crate::contract_verify_response::{Contract_verify_response};
+use crate::verification_response::{VerificationResult};
 
 
 /// Define cvr from resposne of smart contract verification.
@@ -57,7 +57,7 @@ impl DB {
     /// ```rs
     /// let collect = database.collection("name_of_collection")
     /// ```
-    fn cvr_collection(&self) -> Collection<Contract_verify_response> {
+    fn cvr_collection(&self) -> Collection<VerificationResult> {
         self.db().collection("cvr")
     }
 
