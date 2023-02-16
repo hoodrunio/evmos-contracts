@@ -66,7 +66,7 @@ impl DB {
     /// ```rs
     /// database.add_contract_verify_response(Contract_verify_response).await;
     /// ```
-    pub async fn add_contract_verify_response(&self, cvr: Contract_verify_response) -> Result<(), String> {
+    pub async fn add_contract_verify_response(&self, cvr: VerificationResult) -> Result<(), String> {
         match self.cvr_collection().insert_one(cvr, None).await {
             Ok(_) => Ok(()),
             Err(_) => Err("Cannot save the contract_verify_response.".into()),
