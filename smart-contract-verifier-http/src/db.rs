@@ -3,6 +3,13 @@ use chrono::{TimeZone, Utc};
 use mongodb::bson::doc;
 use crate::contract_verify_response::{Contract_verify_response};
 
+
+/// Define cvr from resposne of smart contract verification.
+/// #Usage
+/// ```rs
+/// cvr_$type()
+/// ```
+
 pub struct DB {
     /// The MongoDB client that works with a MongoDB instance.
     mongo: Client,
@@ -45,8 +52,25 @@ impl DB {
         self.mongo.database(&self.db_name)
     }   
 
-    fn collection(&self, collection_name: &str) -> Collection<Contract_verify_response> {
-        self.db().collection(collection_name)
+    /// Returns the specified collection
+    /// #Usage
+    /// ```rs
+    /// let collect = database.collection("name_of_collection")
+    /// ```
+    fn cvr_collection(&self) -> Collection<Contract_verify_response> {
+        self.db().collection("cvr")
+    }
+
+    /// Adds a new response of contract verification to the contract_verify_response collection of the database.
+    /// # Usage
+    /// ```rs
+    /// database.add_contract_verify_response(Contract_verify_response).await;
+    /// ```
+    pub async fn add_contract_verify_response(&self, cvr: Contract_verify_response) -> Result<(), String> {
+        match self.cvr_collection().insert_one(cvr, None).await {
+            Ok(_) => Ok(()),
+            Err(_) => Err("Cannot save the contract_verify_response.".into()),
+        }
     }
 
 }
