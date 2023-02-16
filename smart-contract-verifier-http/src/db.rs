@@ -1,4 +1,4 @@
-use mongodb::{Client, Database, options::{ClientOptions, ResolverConfig}};
+use mongodb::{Client, Database, Collection, options::{ClientOptions, ResolverConfig}};
 use chrono::{TimeZone, Utc};
 use mongodb::bson::doc;
 
@@ -27,18 +27,25 @@ impl DB {
         }
     }
 
+    /// Changes the name of the database and returns a new one.
+    pub fn change_name(self, db_name: &str) -> DB {
+        DB {
+            db_name: db_name.to_string(),
+            ..self
+        }
+    }
+
     /// Returns the MongoDB database.
     /// # Usage
     /// ```rs
     /// let db = database.get_db();
     /// ```
     fn db(&self) -> Database {
-        println!("success");
         self.mongo.database(&self.db_name)
     }   
-}
 
-//    // Get the 'movies' collection from the 'sample_mflix' database:
-//    let movies = client.database("sample_mflix").collection("movies");
-//    let insert_result = movies.insert_one(new_doc.clone(), None).await?;
-//    println!("New document ID: {}", insert_result.inserted_id);
+    fn collection(&self, collection_name: &str) -> Collection {
+        self.db().collection(collection_name);
+    }
+
+}
