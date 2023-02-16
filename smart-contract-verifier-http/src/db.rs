@@ -2,6 +2,10 @@ use mongodb::{Client, Database, Collection, options::{ClientOptions, ResolverCon
 use chrono::{TimeZone, Utc};
 use mongodb::bson::doc;
 
+pub struct Contract {
+    file_name: &str
+}
+
 pub struct DB {
     /// The MongoDB client that works with a MongoDB instance.
     mongo: Client,
