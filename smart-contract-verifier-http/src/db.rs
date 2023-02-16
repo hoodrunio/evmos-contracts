@@ -21,12 +21,10 @@ impl DB {
         // Load the MongoDB connection string
         let client_uri = "mongodb://127.0.0.1:27017";
 
-        // A Client is needed to connect to MongoDB:
-        // An extra line of code to work around a DNS issue on Windows:
-        let options =
-            ClientOptions::parse_with_resolver_config(&client_uri, ResolverConfig::cloudflare())
-                .await?;
-        let client = Client::with_options(options)?;
+        DatabaseTR {
+            mongo: (Client::with_uri_str(client_uri).await.expect("Cannot connect to MongoDB instance.")),
+            db_name: "unexpected_db".to_string(),
+        }
     }
 
     /// Returns the MongoDB database.
