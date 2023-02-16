@@ -14,7 +14,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
    let cvr = Contract_verify_response{
       file_name: "hello.sol".to_string()
    };
-   verify_database.clone().add_contract_verify_response(cvr).await;
+   verify_database.add_contract_verify_response(cvr).await;
    init_logs(settings.jaeger.clone());
    run(settings).await?;
    
