@@ -1,4 +1,4 @@
-use mongodb::{Client, options::{ClientOptions, ResolverConfig}};
+use mongodb::{Client, Database, options::{ClientOptions, ResolverConfig}};
 use chrono::{TimeZone, Utc};
 use mongodb::bson::doc;
 
