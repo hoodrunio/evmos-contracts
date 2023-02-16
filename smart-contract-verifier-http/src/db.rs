@@ -34,7 +34,7 @@ impl DB {
     /// ```
     fn db(&self) -> Database {
         println!("success");
-        self.mongo.database(&self.db_name);
+        self.mongo.database(&self.db_name)
     }   
 }
 
