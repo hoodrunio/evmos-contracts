@@ -9,7 +9,7 @@ use tracing::instrument;
 #[derive(Debug, Deserialize, PartialEq, Eq)]
 pub struct VerificationRequest {
     pub deployed_bytecode: String,
-    pub creation_bytecode: Option<String>,
+    pub creation_bytecode: Option<String>
     pub compiler_version: String,
 
     #[serde(flatten)]
