@@ -31,9 +31,9 @@ pub async fn verify(
 
         let verify_database = DB::new().await;
         let vd = verify_database.change_name("evmos");
-        let cvr = response.result.VerificationResult;
+        let cvr = response.result;
         println!("{:?}", cvr);
-        vd.add_contract_verify_response(cvr).await;
+        // vd.add_contract_verify_response(cvr).await;
 
         return Ok(Json(response));
     }
