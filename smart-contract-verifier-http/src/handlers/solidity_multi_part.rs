@@ -48,7 +48,7 @@ pub async fn verify(
         // Change name of current database from DB
         let vd = verify_database.change_name("evmos");
         // Bring result of smart contract verification
-        let cvr = {
+        pub struct cvr {
             contract_address: request.contract_address, 
             verified_result: response.result.clone().unwrap()
         };
