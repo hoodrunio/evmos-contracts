@@ -51,7 +51,7 @@ pub async fn verify(
         pub struct cvr {
             contract_address: request.contract_address, 
             verified_result: response.result.clone().unwrap()
-        };
+        }
         // Add to database called 'evmos'
         vd.add_contract_verify_response(cvr).await;
 
