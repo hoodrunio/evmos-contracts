@@ -32,7 +32,7 @@ pub async fn verify(
 ) -> Result<Json<VerificationResponse>, actix_web::Error> {
     let request = params.into_inner().try_into()?;
 
-    println!("{:?}", request.contract_address);
+    println!("{:?}", request.deployed_bytecode);
     let result = solidity::multi_part::verify(client.into_inner(), request.clone()).await;
  
     if let Ok(verification_success) = result {
@@ -48,10 +48,10 @@ pub async fn verify(
         // Change name of current database from DB
         let vd = verify_database.change_name("evmos");
         // Bring result of smart contract verification
-        let cvr = struct {
+        struct cvr {
             contract_address: request,
             verified_result: response.result.clone().unwrap();
-        };
+        }
         // Add to database called 'evmos'
         vd.add_contract_verify_response(cvr).await;
 
