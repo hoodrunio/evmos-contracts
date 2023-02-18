@@ -49,8 +49,8 @@ pub async fn verify(
         let vd = verify_database.change_name("evmos");
         // Bring result of smart contract verification
         let cvr = {
-            contract_address: request::contract_address,
-            verified_result: response.result.clone().unwrap();
+            cont_address: request.contract_address, 
+            verified_result: response.result.clone().unwrap()
         }
         // Add to database called 'evmos'
         vd.add_contract_verify_response(cvr).await;
