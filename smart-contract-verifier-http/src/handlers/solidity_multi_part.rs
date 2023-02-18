@@ -30,7 +30,6 @@ pub async fn verify(
     client: web::Data<SolidityClient>,
     params: Json<VerificationRequest>,
 ) -> Result<Json<VerificationResponse>, actix_web::Error> {
-    println!("{:?}", params.into_inner());
     let request = params.into_inner().try_into()?;
 
     println!("{:?}", request);
@@ -74,6 +73,7 @@ impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest 
     type Error = actix_web::Error;
 
     fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
+        let contract_address = value.contract_address;
         let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
             .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
             .0;
@@ -90,6 +90,7 @@ impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest 
         let compiler_version = Version::from_str(&value.compiler_version)
             .map_err(|err| error::ErrorBadRequest(format!("Invalid compiler version: {err}")))?;
         Ok(Self {
+            contract_address,
             deployed_bytecode,
             creation_bytecode,
             compiler_version,
