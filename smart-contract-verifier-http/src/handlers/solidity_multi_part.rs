@@ -89,6 +89,7 @@ impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest 
         let compiler_version = Version::from_str(&value.compiler_version)
             .map_err(|err| error::ErrorBadRequest(format!("Invalid compiler version: {err}")))?;
         Ok(Self {
+            contract_address: value.contract_address,
             deployed_bytecode,
             creation_bytecode,
             compiler_version,
