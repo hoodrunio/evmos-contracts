@@ -33,7 +33,7 @@ pub async fn verify(
     let request = params.into_inner().try_into()?;
 
     println!("{:?}", request);
-    let result = solidity::multi_part::verify(client.into_inner(), request.clone()).await;
+    let result = solidity::multi_part::verify(client.into_inner(), request).await;
  
     if let Ok(verification_success) = result {
         let response = VerificationResponse::ok(verification_success.into());
