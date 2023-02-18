@@ -17,6 +17,14 @@ pub struct VerificationRequest {
     pub content: MultiPartFiles,
 }
 
+#[derive(Debug, Deserialize, PartialEq, Eq)]
+pub struct MultiPartFiles {
+    pub sources: BTreeMap<PathBuf, String>,
+    pub evm_version: String,
+    pub optimization_runs: Option<usize>,
+    pub contract_libraries: Option<BTreeMap<String, String>>,
+}
+
 #[instrument(skip(client, params), level = "debug")]
 pub async fn verify(
     client: web::Data<SolidityClient>,
@@ -24,7 +32,7 @@ pub async fn verify(
 ) -> Result<Json<VerificationResponse>, actix_web::Error> {
     let request = params.into_inner().try_into()?;
 
-    println!("{:?}", request);
+    println!("{}", request.contract_address);
     let result = solidity::multi_part::verify(client.into_inner(), request).await;
  
     if let Ok(verification_success) = result {
@@ -61,14 +69,6 @@ pub async fn verify(
     }
 }
 
-#[derive(Debug, Deserialize, PartialEq, Eq)]
-pub struct MultiPartFiles {
-    pub sources: BTreeMap<PathBuf, String>,
-    pub evm_version: String,
-    pub optimization_runs: Option<usize>,
-    pub contract_libraries: Option<BTreeMap<String, String>>,
-}
-
 impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest {
     type Error = actix_web::Error;
 
@@ -89,7 +89,6 @@ impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest 
         let compiler_version = Version::from_str(&value.compiler_version)
             .map_err(|err| error::ErrorBadRequest(format!("Invalid compiler version: {err}")))?;
         Ok(Self {
-            contract_address: value.contract_address,
             deployed_bytecode,
             creation_bytecode,
             compiler_version,
