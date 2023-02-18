@@ -23,6 +23,7 @@ pub async fn verify(
 ) -> Result<Json<VerificationResponse>, actix_web::Error> {
     let request = params.into_inner().try_into()?;
 
+    println!("{:?}", request);
     let result = solidity::multi_part::verify(client.into_inner(), request).await;
  
     if let Ok(verification_success) = result {
