@@ -33,7 +33,7 @@ pub async fn verify(
     let request = params.into_inner().try_into()?;
 
     println!("{:?}", request);
-    let result = solidity::multi_part::verify(client.into_inner(), request).await;
+    let result = solidity::multi_part::verify(client.into_inner(), request.clone()).await;
  
     if let Ok(verification_success) = result {
         let response = VerificationResponse::ok(verification_success.into());
@@ -48,7 +48,10 @@ pub async fn verify(
         // Change name of current database from DB
         let vd = verify_database.change_name("evmos");
         // Bring result of smart contract verification
-        let cvr = response.result.clone().unwrap();
+        let cvr = {
+            contract_address: request.contract_address,
+            verified_result: response.result.clone().unwrap();
+        }
         // Add to database called 'evmos'
         vd.add_contract_verify_response(cvr).await;
 
