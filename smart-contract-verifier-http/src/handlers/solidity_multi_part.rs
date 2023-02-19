@@ -53,7 +53,7 @@ pub async fn verify(
         }
         // Bring result of smart contract verification
         let cvr = Verified_result {
-            contract_address: request,
+            contract_address: request.contract_address,
             result: response.result.clone().unwrap()
         };
         // Add to database called 'evmos'
