@@ -55,7 +55,7 @@ pub async fn verify(
         let cvr = Verified_result {
             contract_address: request,
             result: response.result.clone().unwrap()
-        }
+        };
         // Add to database called 'evmos'
         vd.add_contract_verify_response(cvr).await;
 
