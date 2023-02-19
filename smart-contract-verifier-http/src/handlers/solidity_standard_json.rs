@@ -24,7 +24,7 @@ pub async fn verify(
     client: web::Data<SolidityClient>,
     params: Json<VerificationRequest>,
 ) -> Result<Json<VerificationResponse>, actix_web::Error> {
-    let request = {
+    let request: smart_contract_verifier::solidity::standard_json::VerificationRequest = {
         let request: Result<_, ParseError> = params.into_inner().try_into();
         if let Err(err) = request {
             match err {
