@@ -52,8 +52,9 @@ pub async fn verify(
             contract_address: request.clone().contract_address,
             result: response.result.clone().unwrap()
         };
+        println!("{:?}", cvr);
         // Add to database called 'evmos'
-        vd.add_contract_verify_response(cvr).await;
+        // vd.add_contract_verify_response(cvr).await;
 
         ///////////////////////////////////// End ////////////////////////////////////
         
