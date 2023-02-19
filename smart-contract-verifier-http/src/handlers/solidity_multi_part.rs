@@ -17,7 +17,7 @@ pub struct VerificationRequest {
     pub content: MultiPartFiles,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 pub struct MultiPartFiles {
     pub sources: BTreeMap<PathBuf, String>,
     pub evm_version: String,
