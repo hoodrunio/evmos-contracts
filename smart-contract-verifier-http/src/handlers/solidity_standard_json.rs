@@ -1,4 +1,4 @@
-use crate::{metrics, verification_response::VerificationResponse, verification_response::VerificationResult, DB, DisplayBytes};
+use crate::{metrics, verification_response::VerificationResponse, verification_response::VerificationResult, verified_contract_result::Verified_Contract_Result, DB, DisplayBytes};
 use actix_web::{error, web, web::Json};
 use anyhow::anyhow;
 use ethers_solc::CompilerInput;
@@ -49,7 +49,10 @@ pub async fn verify(
         // Change name of current database from DB
         let vd = verify_database.change_name("evmos");
         // Bring result of smart contract verification
-        let cvr = response.result.clone().unwrap();
+        let cvr = Verified_Contract_Result {
+            contract_address: request.clone().contract_address,
+            result: response.result.clone().unwrap()
+        };
         // Add to database called 'evmos'
         vd.add_contract_verify_response(cvr).await;
 
