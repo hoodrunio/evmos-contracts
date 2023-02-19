@@ -35,7 +35,7 @@ pub async fn verify(
         request.unwrap()
     };
 
-    let result = solidity::standard_json::verify(client.into_inner(), request).await;
+    let result = solidity::standard_json::verify(client.into_inner(), request.clone()).await;
 
     if let Ok(verification_success) = result {
         let response = VerificationResponse::ok(verification_success.into());
@@ -91,6 +91,7 @@ impl TryFrom<VerificationRequest> for solidity::standard_json::VerificationReque
     type Error = ParseError;
 
     fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
+        let contract_address = value.contract_address;
         let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
             .map_err(|err| anyhow!("Invalid deployed bytecode: {:?}", err))?
             .0;
@@ -105,6 +106,7 @@ impl TryFrom<VerificationRequest> for solidity::standard_json::VerificationReque
         let compiler_version = Version::from_str(&value.compiler_version)
             .map_err(|err| anyhow!("Invalid compiler version: {}", err))?;
         Ok(Self {
+            contract_address,
             deployed_bytecode,
             creation_bytecode,
             compiler_version,
