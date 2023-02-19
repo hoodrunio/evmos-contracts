@@ -8,7 +8,7 @@ use std::str::FromStr;
 use thiserror::Error;
 use tracing::instrument;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct VerificationRequest {
     pub deployed_bytecode: String,
     pub creation_bytecode: Option<String>,
