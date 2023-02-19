@@ -30,7 +30,7 @@ pub async fn verify(
     client: web::Data<SolidityClient>,
     params: Json<VerificationRequest>,
 ) -> Result<Json<VerificationResponse>, actix_web::Error> {
-    let request = TryInto::VerificationRequest::try_into(params);
+    let request = <dyn TryInto>::VerificationRequest::try_into(params);
     // let request = params.into_inner().try_into()?;
 
     println!("{:?}", request);
