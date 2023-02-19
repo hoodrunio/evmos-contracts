@@ -7,6 +7,7 @@ use bytes::Bytes;
 use ethers_solc::{artifacts::output_selection::OutputSelection, CompilerInput};
 use std::sync::Arc;
 
+#[derive(Clone)]
 pub struct VerificationRequest {
     pub deployed_bytecode: Bytes,
     pub creation_bytecode: Option<Bytes>,
@@ -15,6 +16,7 @@ pub struct VerificationRequest {
     pub content: StandardJsonContent,
 }
 
+#[derive(Clone)]
 pub struct StandardJsonContent {
     pub input: CompilerInput,
 }
