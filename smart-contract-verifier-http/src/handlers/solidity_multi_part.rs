@@ -6,7 +6,7 @@ use smart_contract_verifier::{solidity, SolidityClient, VerificationError, Versi
 use std::{collections::BTreeMap, path::PathBuf, str::FromStr};
 use tracing::instrument;
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Deserialize, PartialEq, Eq)]
 pub struct VerificationRequest {
     pub contract_address: String,
     pub deployed_bytecode: String,
@@ -30,7 +30,7 @@ pub async fn verify(
     client: web::Data<SolidityClient>,
     params: VerificationRequest,
 ) -> Result<Json<VerificationResponse>, actix_web::Error> {
-    let request = params;
+    let request = params.into_inner().try_into()?.unwrap();
 
     println!("{:?}", request);
     let result = solidity::multi_part::verify(client.into_inner(), request.clone()).await;
