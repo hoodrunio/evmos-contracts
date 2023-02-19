@@ -42,13 +42,20 @@ pub async fn verify(
         //////////////////////////////////////////////////////////////////////////////
         //////////// This is to record verification result to database ///////////////
         //////////////////////////////////////////////////////////////////////////////
-println!("{:?}", response);
+        println!("{:?}", response.result);
         // Creation object of DB
         let verify_database = DB::new().await;
         // Change name of current database from DB
         let vd = verify_database.change_name("evmos");
+        struct Verified_result {
+            contract_address: String,
+            result: VerificationResult
+        }
         // Bring result of smart contract verification
-        let cvr = response.result.clone().unwrap();
+        let cvr = Verified_result {
+            contract_address: request,
+            result: response.result.clone().unwrap()
+        }
         // Add to database called 'evmos'
         vd.add_contract_verify_response(cvr).await;
 
