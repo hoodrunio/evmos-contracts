@@ -1,4 +1,4 @@
-use crate::{metrics, verification_response::VerificationResponse, verification_response::VerificationResult, DB, DisplayBytes};
+use crate::{metrics, verification_response::VerificationResponse, verification_response::VerificationResult, verified_contract_result: Verified_Contract_Result, DB, DisplayBytes};
 use actix_web::{error, web, web::Json};
 use ethers_solc::EvmVersion;
 use serde::Deserialize;
@@ -47,12 +47,8 @@ pub async fn verify(
         let verify_database = DB::new().await;
         // Change name of current database from DB
         let vd = verify_database.change_name("evmos");
-        struct Verified_result {
-            contract_address: String,
-            result: VerificationResult
-        }
         // Bring result of smart contract verification
-        let cvr = Verified_result {
+        let cvr = Verified_Contract_Result {
             contract_address: request.contract_address,
             result: response.result.clone().unwrap()
         };

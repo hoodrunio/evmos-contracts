@@ -7,6 +7,7 @@ mod tracer;
 mod verification_response;
 mod versions;
 mod db;
+mod verified_contract_result;
 
 #[cfg(test)]
 mod tests;
@@ -20,3 +21,4 @@ pub use tracer::init_logs;
 pub use verification_response::{BytecodePart, VerificationResponse, VerificationStatus, VerificationResult};
 pub use versions::VersionsResponse;
 pub use db::DB;
+pub use verified_contract_result: Verified_Contract_Result;
