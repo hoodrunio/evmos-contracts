@@ -1,4 +1,4 @@
-use crate::{metrics, verification_response::VerificationResponse, verification_response::VerificationResult, verified_contract_result: Verified_Contract_Result, DB, DisplayBytes};
+use crate::{metrics, verification_response::VerificationResponse, verification_response::VerificationResult, verified_contract_result::Verified_Contract_Result, DB, DisplayBytes};
 use actix_web::{error, web, web::Json};
 use ethers_solc::EvmVersion;
 use serde::Deserialize;
