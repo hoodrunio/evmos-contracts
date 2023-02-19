@@ -10,6 +10,7 @@ use tracing::instrument;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct VerificationRequest {
+    pub contract_address: String,
     pub deployed_bytecode: String,
     pub creation_bytecode: Option<String>,
     pub compiler_version: String,

@@ -9,6 +9,7 @@ use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct VerificationRequest {
+    pub contract_address: String,
     pub deployed_bytecode: Bytes,
     pub creation_bytecode: Option<Bytes>,
     pub compiler_version: Version,
