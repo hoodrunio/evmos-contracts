@@ -6,7 +6,7 @@ use smart_contract_verifier::{solidity, SolidityClient, VerificationError, Versi
 use std::{collections::BTreeMap, path::PathBuf, str::FromStr};
 use tracing::instrument;
 
-#[derive(Debug, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 pub struct VerificationRequest {
     pub contract_address: String,
     pub deployed_bytecode: String,
