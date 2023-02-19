@@ -28,7 +28,7 @@ pub struct MultiPartFiles {
 #[instrument(skip(client, params), level = "debug")]
 pub async fn verify(
     client: web::Data<SolidityClient>,
-    params: VerificationRequest,
+    params: Json<VerificationRequest>,
 ) -> Result<Json<VerificationResponse>, actix_web::Error> {
     let request = params.into_inner().try_into()?.unwrap();
 
