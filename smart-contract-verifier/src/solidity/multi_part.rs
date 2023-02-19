@@ -11,7 +11,7 @@ use ethers_solc::{
 use semver::VersionReq;
 use std::{collections::BTreeMap, path::PathBuf, sync::Arc};
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct VerificationRequest {
     pub contract_address: String,
     pub deployed_bytecode: Bytes,
