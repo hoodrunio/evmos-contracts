@@ -26,7 +26,7 @@ pub struct MultiPartFiles {
     pub contract_libraries: Option<BTreeMap<String, String>>,
 }
 
-pub async fn get_Code() -> Result<String, Err> {
+pub async fn get_Code() -> Result<String, anyhow::Error> {
     let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
     rpc.eth_get_code("0xBbD37BF85f7474b5bDe689695674faB1888565Ad", None).await?
 }
