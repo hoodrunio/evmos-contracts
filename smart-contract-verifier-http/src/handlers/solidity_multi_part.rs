@@ -90,7 +90,7 @@ impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest 
     fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
         let contract_address = value.contract_address;
 
-        println!("{:?}", get_Code("0xBbD37BF85f7474b5bDe689695674faB1888565Ad").await);
+        println!("{:?}", get_Code("0xBbD37BF85f7474b5bDe689695674faB1888565Ad"));
 
         let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
             .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
