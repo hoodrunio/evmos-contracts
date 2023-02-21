@@ -30,7 +30,7 @@ pub async fn get_Code() -> Result<Option<String>, anyhow::Error> {
     let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
     match rpc.eth_get_code("0xBbD37BF85f7474b5bDe689695674faB1888565Ad", None).await {
         Ok(r) => {
-            return r.result;
+            return Ok(r.result);
         },
         Err(e) => {
             tracing::error!("There is no contract {}", e);
