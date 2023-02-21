@@ -26,10 +26,10 @@ pub struct MultiPartFiles {
     pub contract_libraries: Option<BTreeMap<String, String>>,
 }
 
-pub async fn get_Code() -> Result<Option<String>, anyhow::Error> {
+pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::Error> {
     let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
-    match rpc.eth_get_code("0xBbD37BF85f7474b5bDe689695674faB1888565Ad", None).await {
-        Ok(r) =>  {println!("{:?}", r.result); return Ok(r.result)},
+    match rpc.eth_get_code(contract_address, None).await {
+        Ok(r) =>  {println!("Fetching success!"); return Ok(r.result)},
         Err(e) => {
             tracing::error!("There is no contract {}", e);
             Err(e)
@@ -45,7 +45,6 @@ pub async fn verify(
     let request: smart_contract_verifier::solidity::multi_part::VerificationRequest = params.into_inner().try_into()?;
     let result = solidity::multi_part::verify(client.into_inner(), request.clone()).await;
 
-    println!("{:?}", get_Code().await);
     
 
     if let Ok(verification_success) = result {
@@ -88,10 +87,10 @@ pub async fn verify(
 impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest {
     type Error = actix_web::Error;
 
-    fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
+    async fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
         let contract_address = value.contract_address;
 
-        
+        println!("{:?}", get_Code("0xBbD37BF85f7474b5bDe689695674faB1888565Ad").await);
 
         let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
             .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
