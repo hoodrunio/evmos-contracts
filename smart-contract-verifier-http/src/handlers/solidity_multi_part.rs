@@ -26,6 +26,14 @@ pub struct MultiPartFiles {
     pub contract_libraries: Option<BTreeMap<String, String>>,
 }
 
+pub async fn get_Code() -> anyhow::Result<()> {
+    let rpc = Web3::new("http://127.0.0.1:8545".to_string());
+    let r = rpc
+    .eth_get_code("0x067eC87844fBD73eDa4a1059F30039584586e09d", None)
+    .await?;
+    println!("{:?}", r);
+}
+
 #[instrument(skip(client, params), level = "debug")]
 pub async fn verify(
     client: web::Data<SolidityClient>,
@@ -33,15 +41,10 @@ pub async fn verify(
 ) -> Result<Json<VerificationResponse>, actix_web::Error> {
     let request: smart_contract_verifier::solidity::multi_part::VerificationRequest = params.into_inner().try_into()?;
 
+    get_Code().await;
     println!("{:?}", request);
     let result = solidity::multi_part::verify(client.into_inner(), request.clone()).await;
- 
-    let rpc = Web3::new("http://127.0.0.1:8545".to_string());
-        let r = rpc
-        .eth_get_code("0x067eC87844fBD73eDa4a1059F30039584586e09d", None)
-        .await?;
-        println!("{:?}", r);
-        
+
     if let Ok(verification_success) = result {
         let response = VerificationResponse::ok(verification_success.into());
         metrics::count_verify_contract("solidity", &response.status, "multi-part");
