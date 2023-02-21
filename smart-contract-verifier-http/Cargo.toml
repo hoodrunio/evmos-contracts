@@ -12,7 +12,7 @@ mongodb = "2.1"
 bson = { version = "2", features = ["chrono-0_4"] } 
 chrono = "0.4" # Used for setting DateTimes
 
-actix-web = "=4.1"
+actix-web = "4.1"
 actix-web-prom = "0.6"
 anyhow = "1.0"
 blockscout-display-bytes = { version = "1.0", features = ["ethers-core"] }
