@@ -87,7 +87,7 @@ pub async fn verify(
 impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest {
     type Error = actix_web::Error;
 
-    async fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
+    fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
         let contract_address = value.contract_address;
 
         println!("{:?}", get_Code("0xBbD37BF85f7474b5bDe689695674faB1888565Ad").await);
