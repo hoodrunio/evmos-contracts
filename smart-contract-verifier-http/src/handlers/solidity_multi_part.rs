@@ -28,7 +28,7 @@ pub struct MultiPartFiles {
 
 pub async fn get_Code() -> anyhow::Result<()> {
     let rpc = Web3::new("http://127.0.0.1:8545".to_string());
-    let r = rpc.eth_get_code("0x067eC87844fBD73eDa4a1059F30039584586e09d", None).await?;
+    let r = rpc.eth_get_code("0xc00e94cb662c3520282e6f5717214004a7f26888", None).await?;
     println!("start");
     println!("{:?}", r);
     println!("end");
@@ -44,7 +44,6 @@ pub async fn verify(
     let request: smart_contract_verifier::solidity::multi_part::VerificationRequest = params.into_inner().try_into()?;
 
     get_Code().await;
-    println!("{:?}", request);
     let result = solidity::multi_part::verify(client.into_inner(), request.clone()).await;
 
     if let Ok(verification_success) = result {
@@ -54,7 +53,7 @@ pub async fn verify(
         //////////////////////////////////////////////////////////////////////////////
         //////////// This is to record verification result to database ///////////////
         //////////////////////////////////////////////////////////////////////////////
-        println!("{:?}", response.result);
+        
         // Creation object of DB
         let verify_database = DB::new().await;
         // Change name of current database from DB
