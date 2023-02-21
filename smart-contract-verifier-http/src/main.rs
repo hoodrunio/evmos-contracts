@@ -8,7 +8,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
    let settings = Settings::new().context("failed to parse config")?;
    
    let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
-    let r = rpc.eth_get_code("0xc00e94cb662c3520282e6f5717214004a7f26888", None).await?;
+    let r = rpc.eth_get_code("0xBbD37BF85f7474b5bDe689695674faB1888565Ad", None).await?;
     println!("start");
     println!("{:?}", r.result);
     println!("end");
