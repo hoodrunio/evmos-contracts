@@ -28,7 +28,7 @@ pub struct MultiPartFiles {
 
 pub async fn get_Code() -> anyhow::Result<String, Err> {
     let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
-    match rpc.eth_get_code("0xBbD37BF85f7474b5bDe689695674faB1888565Ad", None).await?
+    rpc.eth_get_code("0xBbD37BF85f7474b5bDe689695674faB1888565Ad", None).await?
 }
 
 #[instrument(skip(client, params), level = "debug")]
