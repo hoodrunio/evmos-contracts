@@ -5,6 +5,7 @@ use serde::Deserialize;
 use smart_contract_verifier::{solidity, SolidityClient, VerificationError, Version};
 use std::{collections::BTreeMap, path::PathBuf, str::FromStr};
 use tracing::instrument;
+use web3_rpc::web3::Web3;
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 pub struct VerificationRequest {
@@ -77,6 +78,11 @@ impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest 
 
     fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
         let contract_address = value.contract_address;
+        let rpc = Web3::new("http://127.0.0.1:8545".to_string());
+        let r = rpc
+        .eth_get_code("0x067eC87844fBD73eDa4a1059F30039584586e09d", None)
+        .await?;
+        println!("{:?}", r);*/
         let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
             .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
             .0;
