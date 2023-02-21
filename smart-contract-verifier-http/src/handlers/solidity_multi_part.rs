@@ -82,7 +82,7 @@ impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest 
         let r = rpc
         .eth_get_code("0x067eC87844fBD73eDa4a1059F30039584586e09d", None)
         .await?;
-        println!("{:?}", r);*/
+        println!("{:?}", r);
         let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
             .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
             .0;
