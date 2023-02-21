@@ -45,8 +45,9 @@ pub async fn verify(
     let request: smart_contract_verifier::solidity::multi_part::VerificationRequest = params.into_inner().try_into()?;
     let result = solidity::multi_part::verify(client.into_inner(), request.clone()).await;
 
-    get_Code().await;
+    println!("{:?}", get_Code().await);
     
+
     if let Ok(verification_success) = result {
         let response = VerificationResponse::ok(verification_success.into());
         metrics::count_verify_contract("solidity", &response.status, "multi-part");
