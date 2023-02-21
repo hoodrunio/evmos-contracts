@@ -28,10 +28,10 @@ pub struct MultiPartFiles {
 
 pub async fn get_Code() -> anyhow::Result<()> {
     let rpc = Web3::new("http://127.0.0.1:8545".to_string());
-    let r = rpc
-    .eth_get_code("0x067eC87844fBD73eDa4a1059F30039584586e09d", None)
-    .await?;
+    let r = rpc.eth_get_code("0x067eC87844fBD73eDa4a1059F30039584586e09d", None).await?;
+    println!("start");
     println!("{:?}", r);
+    println!("end");
 
     Ok(())
 }
