@@ -29,9 +29,10 @@ pub struct MultiPartFiles {
 pub async fn get_Code() -> Result<Option<String>, anyhow::Error> {
     let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
     match rpc.eth_get_code("0xBbD37BF85f7474b5bDe689695674faB1888565Ad", None).await {
-        Ok(r) =>  {println!("{:?}", r.result); return r.result},
+        Ok(r) =>  {println!("{:?}", r.result); return Ok(r.result)},
         Err(e) => {
             tracing::error!("There is no contract {}", e);
+            Err(e)
         }
     }
 }
@@ -87,7 +88,7 @@ impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest 
     fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
         let contract_address = value.contract_address;
 
-        
+        get_Code().await;
 
         let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
             .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
