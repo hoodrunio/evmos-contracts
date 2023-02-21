@@ -88,7 +88,7 @@ impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest 
     type Error = actix_web::Error;
 
     fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
-        println!("{}", get_Code());
+        println!("{:?}", get_Code());
         let contract_address = value.contract_address;
         let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
             .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
