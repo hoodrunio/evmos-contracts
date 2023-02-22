@@ -13,6 +13,7 @@ use std::{collections::BTreeMap, path::PathBuf, sync::Arc};
 use web3_rpc::web3::Web3;
 use crate::DisplayBytes;
 use actix_web::error;
+ use std::str::FromStr;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VerificationRequest {
