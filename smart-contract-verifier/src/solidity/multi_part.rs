@@ -83,7 +83,7 @@ pub async fn verify(client: Arc<Client>, request: VerificationRequest) -> Result
         client.compilers(),
         &compiler_version,
         request.creation_bytecode,
-        deployed_bytecode,
+        request.deployed_bytecode,
     )?;
 
     let compiler_inputs: Vec<CompilerInput> = request.content.into();
