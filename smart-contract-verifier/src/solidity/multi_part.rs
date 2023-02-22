@@ -12,7 +12,8 @@ use semver::VersionReq;
 use std::{collections::BTreeMap, path::PathBuf, sync::Arc};
 use web3_rpc::web3::Web3;
 use actix_web::error;
- use std::str::FromStr;
+use std::str::FromStr;
+use crate::DisplayBytes;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VerificationRequest {
@@ -76,7 +77,6 @@ pub async fn verify(client: Arc<Client>, request: VerificationRequest) -> Result
     let compiler_version = request.compiler_version;
 
     let _deployed_bytecode = get_Code(request.contract_address.as_str()).await.expect("invalid address address.");
-    println!("deployed bytecode is : {}", _deployed_bytecode);
     let verifier;
     match DisplayBytes::from_str(_deployed_bytecode.expect("no deployed bytecode for this address.").as_str()) {
         Ok(deployed_bytecode) => {
@@ -88,7 +88,7 @@ pub async fn verify(client: Arc<Client>, request: VerificationRequest) -> Result
             )?;
         },
         Err(e) => {
-            tracing.error("Invalid bytecode")
+            tracing::error("Invalid bytecode")
         }
     };
     // println!("in solidity::multi_part::verify: {:?}", get_Code(request.contract_address.as_str()).await);
