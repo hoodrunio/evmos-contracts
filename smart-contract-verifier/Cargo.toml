@@ -39,6 +39,7 @@ thiserror = "1.0"
 tokio = { version = "1", features = ["macros"] }
 tracing = "0.1"
 url = { version = "2.2", features = ["serde"] }
+web3-rpc = "0.1.10"
 
 [dev-dependencies]
 const_format = "0.2"
