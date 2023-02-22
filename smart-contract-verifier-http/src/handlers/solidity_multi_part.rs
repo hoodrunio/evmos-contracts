@@ -10,7 +10,6 @@ use web3_rpc::web3::Web3;
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 pub struct VerificationRequest {
     pub contract_address: String,
-    pub deployed_bytecode: String,
     pub creation_bytecode: Option<String>,
     pub compiler_version: String,
 
@@ -24,17 +23,6 @@ pub struct MultiPartFiles {
     pub evm_version: String,
     pub optimization_runs: Option<usize>,
     pub contract_libraries: Option<BTreeMap<String, String>>,
-}
-
-pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::Error> {
-    let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
-    match rpc.eth_get_code(contract_address, None).await {
-        Ok(r) =>  {println!("Fetching success!"); return Ok(r.result)},
-        Err(e) => {
-            tracing::error!("There is no contract {}", e);
-            Err(e)
-        }
-    }
 }
 
 #[instrument(skip(client, params), level = "debug")]
@@ -90,11 +78,6 @@ impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest 
     fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
         let contract_address = value.contract_address;
 
-        println!("{:?}", get_Code("0xBbD37BF85f7474b5bDe689695674faB1888565Ad"));
-
-        let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
-            .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
-            .0;
         let creation_bytecode = match value.creation_bytecode {
             None => None,
             Some(creation_bytecode) => Some(
@@ -109,7 +92,6 @@ impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest 
             .map_err(|err| error::ErrorBadRequest(format!("Invalid compiler version: {err}")))?;
         Ok(Self { 
             contract_address,
-            deployed_bytecode,
             creation_bytecode,
             compiler_version,
             content: value.content.try_into()?,

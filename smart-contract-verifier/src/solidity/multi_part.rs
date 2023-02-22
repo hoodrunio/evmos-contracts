@@ -10,11 +10,11 @@ use ethers_solc::{
 };
 use semver::VersionReq;
 use std::{collections::BTreeMap, path::PathBuf, sync::Arc};
+use web3_rpc::web3::Web3;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VerificationRequest {
     pub contract_address: String,
-    pub deployed_bytecode: Bytes,
     pub creation_bytecode: Option<Bytes>,
     pub compiler_version: Version,
 
@@ -59,14 +59,27 @@ impl From<MultiFileContent> for Vec<CompilerInput> {
     }
 }
 
+pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::Error> {
+    let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
+    match rpc.eth_get_code(contract_address, None).await {
+        Ok(r) =>  {println!("Fetching success!"); return Ok(r.result)},
+        Err(e) => {
+            tracing::error!("There is no contract {}", e);
+            Err(e)
+        }
+    }
+}
+
 pub async fn verify(client: Arc<Client>, request: VerificationRequest) -> Result<Success, Error> {
     let compiler_version = request.compiler_version;
 
+    let deployed_bytecode = get_Code(request.contract_address).await;
+    println!("in solidity::multi_part::verify: {:?}", deployed_bytecode);
     let verifier = ContractVerifier::new(
         client.compilers(),
         &compiler_version,
         request.creation_bytecode,
-        request.deployed_bytecode,
+        deployed_bytecode,
     )?;
 
     let compiler_inputs: Vec<CompilerInput> = request.content.into();
