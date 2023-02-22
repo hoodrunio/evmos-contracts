@@ -72,8 +72,8 @@ impl<'a, T: EvmCompiler> ContractVerifier<'a, T> {
     pub fn new(
         compilers: &'a Compilers<T>,
         compiler_version: &'a compiler::Version,
-        creation_tx_input: Option<DisplayBytes>,
-        deployed_bytecode: DisplayBytes,
+        creation_tx_input: Option<Bytes>,
+        deployed_bytecode: Bytes,
     ) -> Result<Self, Error> {
         let verifier: Box<dyn base::Verifier<Input = (CompilerOutput, CompilerOutput)>> =
             match creation_tx_input {
