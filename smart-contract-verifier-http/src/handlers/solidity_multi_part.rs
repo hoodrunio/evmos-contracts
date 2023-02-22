@@ -25,16 +25,16 @@ pub struct MultiPartFiles {
     pub contract_libraries: Option<BTreeMap<String, String>>,
 }
 
-pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::Error> {
-    let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
-    match rpc.eth_get_code(contract_address, None).await {
-        Ok(r) =>  {println!("Fetching success!"); return Ok(r.result)},
-        Err(e) => {
-            tracing::error!("There is no contract {}", e);
-            Err(e)
-        }
-    }
-}
+// pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::Error> {
+//     let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
+//     match rpc.eth_get_code(contract_address, None).await {
+//         Ok(r) =>  {println!("Fetching success!"); return Ok(r.result)},
+//         Err(e) => {
+//             tracing::error!("There is no contract {}", e);
+//             Err(e)
+//         }
+//     }
+// }
 
 #[instrument(skip(client, params), level = "debug")]
 pub async fn verify(
