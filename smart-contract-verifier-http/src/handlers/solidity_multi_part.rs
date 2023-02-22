@@ -89,7 +89,7 @@ impl TryFrom<VerificationRequest> for solidity::multi_part::VerificationRequest 
     fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
         let contract_address = value.contract_address;
 
-        let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode).expect("error");
+        let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode).expect("error").0;
         let creation_bytecode = match value.creation_bytecode {
             None => None,
             Some(creation_bytecode) => Some(
