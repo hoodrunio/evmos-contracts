@@ -11,7 +11,6 @@ use tracing::instrument;
 #[derive(Debug, Clone, Deserialize)]
 pub struct VerificationRequest {
     pub contract_address: String,
-    pub deployed_bytecode: String,
     pub creation_bytecode: Option<String>,
     pub compiler_version: String,
 
@@ -92,9 +91,6 @@ impl TryFrom<VerificationRequest> for solidity::standard_json::VerificationReque
 
     fn try_from(value: VerificationRequest) -> Result<Self, Self::Error> {
         let contract_address = value.contract_address;
-        let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
-            .map_err(|err| anyhow!("Invalid deployed bytecode: {:?}", err))?
-            .0;
         let creation_bytecode = match value.creation_bytecode {
             None => None,
             Some(creation_bytecode) => Some(
@@ -107,7 +103,6 @@ impl TryFrom<VerificationRequest> for solidity::standard_json::VerificationReque
             .map_err(|err| anyhow!("Invalid compiler version: {}", err))?;
         Ok(Self {
             contract_address,
-            deployed_bytecode,
             creation_bytecode,
             compiler_version,
             content: value.content.try_into()?,
