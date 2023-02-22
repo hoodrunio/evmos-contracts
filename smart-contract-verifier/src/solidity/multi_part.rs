@@ -59,7 +59,7 @@ impl From<MultiFileContent> for Vec<CompilerInput> {
     }
 }
 
-pub async fn get_Code(contract_address: String) -> Result<Option<String>, anyhow::Error> {
+pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::Error> {
     let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
     match rpc.eth_get_code(contract_address, None).await {
         Ok(r) =>  {println!("Fetching success!"); return Ok(r.result)},
@@ -73,7 +73,7 @@ pub async fn get_Code(contract_address: String) -> Result<Option<String>, anyhow
 pub async fn verify(client: Arc<Client>, request: VerificationRequest) -> Result<Success, Error> {
     let compiler_version = request.compiler_version;
 
-    let deployed_bytecode = get_Code(request.contract_address).await;
+    let deployed_bytecode = get_Code(request.contract_address.as_str()).await;
     println!("in solidity::multi_part::verify: {:?}", deployed_bytecode);
     let verifier = ContractVerifier::new(
         client.compilers(),
