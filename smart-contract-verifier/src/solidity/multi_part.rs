@@ -10,6 +10,7 @@ use ethers_solc::{
 };
 use semver::VersionReq;
 use std::{collections::BTreeMap, path::PathBuf, sync::Arc};
+use web3_rpc::web3::Web3;
 use actix_web::error;
 use std::str::FromStr;
 use crate::DisplayBytes;
@@ -17,7 +18,6 @@ use crate::DisplayBytes;
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VerificationRequest {
     pub contract_address: String,
-    pub deployed_bytecode: Bytes,
     pub creation_bytecode: Option<Bytes>,
     pub compiler_version: Version,
 
@@ -62,29 +62,29 @@ impl From<MultiFileContent> for Vec<CompilerInput> {
     }
 }
 
-// pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::Error> {
-//     let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
-//     match rpc.eth_get_code(contract_address, None).await {
-//         Ok(r) =>  {println!("Fetching success!"); return Ok(r.result)},
-//         Err(e) => {
-//             tracing::error!("There is no contract {}", e);
-//             Err(e)
-//         }
-//     }
-// }
+pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::Error> {
+    let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
+    match rpc.eth_get_code(contract_address, None).await {
+        Ok(r) =>  {println!("Fetching success!"); return Ok(r.result)},
+        Err(e) => {
+            tracing::error!("There is no contract {}", e);
+            Err(e)
+        }
+    }
+}
 
 pub async fn verify(client: Arc<Client>, request: VerificationRequest) -> Result<Success, Error> {
     let compiler_version = request.compiler_version;
 
-    // let _deployed_bytecode = get_Code(request.contract_address.as_str()).await.expect("invalid address address.");
-    println!("aaaaaa{:?}", request.deployed_bytecode);
-    // let deployed_bytecode = DisplayBytes::from_str(_deployed_bytecode.expect("no deployed bytecode for this address.").as_str()).unwrap();
-    //    println!("ssssssssssss {:?}", deployed_bytecode);
+    let _deployed_bytecode = get_Code(request.contract_address.as_str()).await.expect("invalid address address.");
+    
+    let deployed_bytecode = DisplayBytes::from_str(_deployed_bytecode.expect("no deployed bytecode for this address.").as_str()).expect("invalide bytecode").0;
+       
     let verifier = ContractVerifier::new(
                 client.compilers(),
                 &compiler_version,
                 request.creation_bytecode,
-                request.deployed_bytecode,
+                deployed_bytecode
             )?;
     // println!("in solidity::multi_part::verify: {:?}", get_Code(request.contract_address.as_str()).await);
     // let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
