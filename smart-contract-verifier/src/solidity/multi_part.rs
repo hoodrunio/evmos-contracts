@@ -76,7 +76,7 @@ pub async fn verify(client: Arc<Client>, request: VerificationRequest) -> Result
     let compiler_version = request.compiler_version;
 
     let _deployed_bytecode = get_Code(request.contract_address.as_str()).await.expect("invalid address address.");
-    println!("deployed bytecode is : {}", _deployed_bytecode);
+    println!("deployed bytecode is : {:?}", _deployed_bytecode);
     // match DisplayBytes::from_str(_deployed_bytecode.expect("no deployed bytecode for this address.").as_str()) {
     //     Ok(deployed_bytecode) => {
     //         let verifier = ContractVerifier::new(
