@@ -76,45 +76,46 @@ pub async fn verify(client: Arc<Client>, request: VerificationRequest) -> Result
     let compiler_version = request.compiler_version;
 
     let _deployed_bytecode = get_Code(request.contract_address.as_str()).await.expect("invalid address address.");
-    println!("deployed bytecode is : {:?}", _deployed_bytecode);
-    // match DisplayBytes::from_str(_deployed_bytecode.expect("no deployed bytecode for this address.").as_str()) {
-    //     Ok(deployed_bytecode) => {
-    //         let verifier = ContractVerifier::new(
-    //             client.compilers(),
-    //             &compiler_version,
-    //             request.creation_bytecode,
-    //             deployed_bytecode,
-    //         )?;
-    //     },
-    //     Err(e) => {
-    //         tracing.error("Invalid bytecode")
-    //     }
-    // };
-    // // println!("in solidity::multi_part::verify: {:?}", get_Code(request.contract_address.as_str()).await);
-    // // let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
-    // //         .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
-    // //         .0;
+    println!("deployed bytecode is : {}", _deployed_bytecode);
+    let verifier;
+    match DisplayBytes::from_str(_deployed_bytecode.expect("no deployed bytecode for this address.").as_str()) {
+        Ok(deployed_bytecode) => {
+            verifier = ContractVerifier::new(
+                client.compilers(),
+                &compiler_version,
+                request.creation_bytecode,
+                deployed_bytecode,
+            )?;
+        },
+        Err(e) => {
+            tracing.error("Invalid bytecode")
+        }
+    };
+    // println!("in solidity::multi_part::verify: {:?}", get_Code(request.contract_address.as_str()).await);
+    // let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
+    //         .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
+    //         .0;
 
-    // let compiler_inputs: Vec<CompilerInput> = request.content.into();
-    // for mut compiler_input in compiler_inputs {
-    //     for metadata in settings_metadata(&compiler_version) {
-    //         compiler_input.settings.metadata = metadata;
-    //         let result = verifier.verify(&compiler_input).await;
+    let compiler_inputs: Vec<CompilerInput> = request.content.into();
+    for mut compiler_input in compiler_inputs {
+        for metadata in settings_metadata(&compiler_version) {
+            compiler_input.settings.metadata = metadata;
+            let result = verifier.verify(&compiler_input).await;
 
-    //         // If no matching contracts have been found, try the next settings metadata option
-    //         if let Err(Error::NoMatchingContracts) = result {
-    //             continue;
-    //         }
+            // If no matching contracts have been found, try the next settings metadata option
+            if let Err(Error::NoMatchingContracts) = result {
+                continue;
+            }
 
-    //         // If any error, it is uncorrectable and should be returned immediately, otherwise
-    //         // we allow middlewares to process success and only then return it to the caller
-    //         let success = result?;
-    //         if let Some(middleware) = client.middleware() {
-    //             middleware.call(&success).await;
-    //         }
-    //         return Ok(success);
-    //     }
-    // }
+            // If any error, it is uncorrectable and should be returned immediately, otherwise
+            // we allow middlewares to process success and only then return it to the caller
+            let success = result?;
+            if let Some(middleware) = client.middleware() {
+                middleware.call(&success).await;
+            }
+            return Ok(success);
+        }
+    }
 
     // No contracts could be verified
     Err(Error::NoMatchingContracts)
