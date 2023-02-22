@@ -62,22 +62,22 @@ impl From<MultiFileContent> for Vec<CompilerInput> {
     }
 }
 
-pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::Error> {
-    let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
-    match rpc.eth_get_code(contract_address, None).await {
-        Ok(r) =>  {println!("Fetching success!"); return Ok(r.result)},
-        Err(e) => {
-            tracing::error!("There is no contract {}", e);
-            Err(e)
-        }
-    }
-}
+// pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::Error> {
+//     let rpc = Web3::new("https://evmos-evm.publicnode.com".to_string());
+//     match rpc.eth_get_code(contract_address, None).await {
+//         Ok(r) =>  {println!("Fetching success!"); return Ok(r.result)},
+//         Err(e) => {
+//             tracing::error!("There is no contract {}", e);
+//             Err(e)
+//         }
+//     }
+// }
 
 pub async fn verify(client: Arc<Client>, request: VerificationRequest) -> Result<Success, Error> {
     let compiler_version = request.compiler_version;
 
     // let _deployed_bytecode = get_Code(request.contract_address.as_str()).await.expect("invalid address address.");
-    
+    println!("aaaaaa{:?}", request.deployed_bytecode);
     // let deployed_bytecode = DisplayBytes::from_str(_deployed_bytecode.expect("no deployed bytecode for this address.").as_str()).unwrap();
     //    println!("ssssssssssss {:?}", deployed_bytecode);
     let verifier = ContractVerifier::new(
