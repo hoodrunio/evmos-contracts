@@ -18,6 +18,7 @@ use crate::DisplayBytes;
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VerificationRequest {
     pub contract_address: String,
+    pub deployed_bytecode: Bytes,
     pub creation_bytecode: Option<Bytes>,
     pub compiler_version: Version,
 
@@ -76,41 +77,41 @@ pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::
 pub async fn verify(client: Arc<Client>, request: VerificationRequest) -> Result<Success, Error> {
     let compiler_version = request.compiler_version;
 
-    let _deployed_bytecode = get_Code(request.contract_address.as_str()).await.expect("invalid address address.");
+    // let _deployed_bytecode = get_Code(request.contract_address.as_str()).await.expect("invalid address address.");
     
-    let deployed_bytecode = DisplayBytes::from_str(_deployed_bytecode.expect("no deployed bytecode for this address.").as_str()).unwrap();
-       println!("ssssssssssss {:?}", deployed_bytecode);
-    // let verifier = ContractVerifier::new(
-    //             client.compilers(),
-    //             &compiler_version,
-    //             request.creation_bytecode,
-    //             request.creation_bytecode,
-    //         )?;
-    // // println!("in solidity::multi_part::verify: {:?}", get_Code(request.contract_address.as_str()).await);
-    // // let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
-    // //         .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
-    // //         .0;
+    // let deployed_bytecode = DisplayBytes::from_str(_deployed_bytecode.expect("no deployed bytecode for this address.").as_str()).unwrap();
+    //    println!("ssssssssssss {:?}", deployed_bytecode);
+    let verifier = ContractVerifier::new(
+                client.compilers(),
+                &compiler_version,
+                request.creation_bytecode,
+                request.deployed_bytecode,
+            )?;
+    // println!("in solidity::multi_part::verify: {:?}", get_Code(request.contract_address.as_str()).await);
+    // let deployed_bytecode = DisplayBytes::from_str(&value.deployed_bytecode)
+    //         .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
+    //         .0;
 
-    // let compiler_inputs: Vec<CompilerInput> = request.content.into();
-    // for mut compiler_input in compiler_inputs {
-    //     for metadata in settings_metadata(&compiler_version) {
-    //         compiler_input.settings.metadata = metadata;
-    //         let result = verifier.verify(&compiler_input).await;
+    let compiler_inputs: Vec<CompilerInput> = request.content.into();
+    for mut compiler_input in compiler_inputs {
+        for metadata in settings_metadata(&compiler_version) {
+            compiler_input.settings.metadata = metadata;
+            let result = verifier.verify(&compiler_input).await;
 
-    //         // If no matching contracts have been found, try the next settings metadata option
-    //         if let Err(Error::NoMatchingContracts) = result {
-    //             continue;
-    //         }
+            // If no matching contracts have been found, try the next settings metadata option
+            if let Err(Error::NoMatchingContracts) = result {
+                continue;
+            }
 
-    //         // If any error, it is uncorrectable and should be returned immediately, otherwise
-    //         // we allow middlewares to process success and only then return it to the caller
-    //         let success = result?;
-    //         if let Some(middleware) = client.middleware() {
-    //             middleware.call(&success).await;
-    //         }
-    //         return Ok(success);
-    //     }
-    // }
+            // If any error, it is uncorrectable and should be returned immediately, otherwise
+            // we allow middlewares to process success and only then return it to the caller
+            let success = result?;
+            if let Some(middleware) = client.middleware() {
+                middleware.call(&success).await;
+            }
+            return Ok(success);
+        }
+    }
 
     // No contracts could be verified
     Err(Error::NoMatchingContracts)
