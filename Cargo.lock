@@ -4263,6 +4263,7 @@ checksum = "a507befe795404456341dfab10cef66ead4c041f62b8b11bbb92bffe5d0953e0"
 name = "smart-contract-verifier"
 version = "0.6.0"
 dependencies = [
+ "actix-web",
  "anyhow",
  "async-trait",
  "blockscout-display-bytes",
@@ -4301,6 +4302,7 @@ dependencies = [
  "tokio",
  "tracing",
  "url",
+ "web3-rpc",
  "wiremock",
 ]
 
@@ -5438,6 +5440,19 @@ checksum = "bcda906d8be16e728fd5adc5b729afad4e444e106ab28cd1c7256e54fa61510f"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "web3-rpc"
+version = "0.1.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "028889145993c75634b33e90a911dabb2e44162a03d2549054f19365326d0131"
+dependencies = [
+ "anyhow",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "tokio",
 ]
 
 [[package]]
