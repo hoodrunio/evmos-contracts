@@ -12,6 +12,7 @@ use semver::VersionReq;
 use std::{collections::BTreeMap, path::PathBuf, sync::Arc};
 use web3_rpc::web3::Web3;
 use crate::DisplayBytes;
+use actix_web::error;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VerificationRequest {
@@ -74,7 +75,7 @@ pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::
 pub async fn verify(client: Arc<Client>, request: VerificationRequest) -> Result<Success, Error> {
     let compiler_version = request.compiler_version;
 
-    let deployed_bytecode = DisplayBytes::from_str(get_Code(request.contract_address.as_str()).await)
+    let deployed_bytecode = DisplayBytes::from_str(get_Code(request.contract_address.as_str()).await.as_str())
                     .map_err(|err| error::ErrorBadRequest(format!("Invalid deployed bytecode: {err:?}")))?
                     .0;;
     println!("in solidity::multi_part::verify: {:?}", deployed_bytecode);
