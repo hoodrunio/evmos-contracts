@@ -75,8 +75,8 @@ pub async fn get_Code(contract_address: &str) -> Result<Option<String>, anyhow::
 pub async fn verify(client: Arc<Client>, request: VerificationRequest) -> Result<Success, Error> {
     let compiler_version = request.compiler_version;
 
-    let _deployed_bytecode = get_Code(request.contract_address.as_str()).await.expect("no deployed bytecode for this address.");
-    let deployed_bytecode = bytes::Bytes::from_str(_deployed_bytecode.expect("no deployed bytecode for this address.").as_str());
+    let _deployed_bytecode = get_Code(request.contract_address.as_str()).await.expect("invalid address address.");
+    let Ok(deployed_bytecode) = DisplayBytes::from_str(_deployed_bytecode.expect("no deployed bytecode for this address.").as_str()).expect("invalid bytecode");
     // println!("in solidity::multi_part::verify: {:?}", get_Code(request.contract_address.as_str()).await);
     let verifier = ContractVerifier::new(
         client.compilers(),
