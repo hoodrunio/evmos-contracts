@@ -11,6 +11,7 @@ use ethers_solc::{
 use semver::VersionReq;
 use std::{collections::BTreeMap, path::PathBuf, sync::Arc};
 use web3_rpc::web3::Web3;
+use crate::DisplayBytes;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VerificationRequest {
