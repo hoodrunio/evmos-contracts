@@ -5,6 +5,7 @@ use serde::Deserialize;
 use smart_contract_verifier::{solidity, SolidityClient, VerificationError, Version};
 use std::{collections::BTreeMap, path::PathBuf, str::FromStr};
 use tracing::instrument;
+use crate::DisplayBytes;
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 pub struct VerificationRequest {
