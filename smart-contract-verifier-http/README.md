@@ -98,14 +98,14 @@ Service supports 4 types of verification:
 
 ```json5
 {
+   // Contract Address to verify
+  contract_address: "0xD49496...eA8A0bd517",
   // (optional) Creation transaction input.
   // If present, is used for contract verification,
   // otherwise deployed bytecode is used
   creation_bytecode: "0x608060...0033000b0c",
-  // Bytecode stored in the blockchain
-  deployed_bytecode: "0x608060...0033",
   // Compiler version used to compile the contract
-  compiler_version: "v0.8.14+commit.80d49f37",
+  compiler_version: "0.8.14+commit.80d49f37",
   // Contains a map from a source file name to the actual source code
   sources: {
     "A.sol": "pragma solidity ^0.8.14; contract A {}",
@@ -133,14 +133,14 @@ Service supports 4 types of verification:
 
 ```json5
 {
+   // Contract Address to verify
+  contract_address: "0xD49496...eA8A0bd517",
   // (optional) Creation transaction input.
   // If present, is used for contract verification,
   // otherwise deployed bytecode is used
   creation_bytecode: "0x608060...0033000b0c",
-  // Bytecode stored in the blockchain
-  deployed_bytecode: "0x608060...0033",
   // Compiler version used to compile the contract
-  compiler_version: "v0.8.14+commit.80d49f37",
+  compiler_version: "0.8.14+commit.80d49f37",
   // https://docs.soliditylang.org/en/latest/using-the-compiler.html#input-description
   input: '{"language": "Solidity","sources": { ... }, "settings": { ... }}',
 }
@@ -185,12 +185,12 @@ Proxies verification requests to Sourcify service and returns responses (https:/
 
 ```json5
 {
+   // Contract Address to verify
+  contract_address: "0xD49496...eA8A0bd517",
   // (optional) Creation transaction input.
   // If present, is used for contract verification,
   // otherwise deployed bytecode is used
   creation_bytecode: "0x608060...0033000b0c",
-  // Bytecode stored in the blockchain
-  deployed_bytecode: "0x608060...0033",
   // Compiler version used to compile the contract
   compiler_version: "0.3.6+commit.4a2124d0",
   // Contains a map from a source file name to the actual source code
