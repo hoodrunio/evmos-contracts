@@ -50,7 +50,7 @@ pub async fn verify(
         let vd = verify_database.change_name("evmos");
         // Bring result of smart contract verification
         let cvr = Verified_Contract_Result {
-            contract_address: request.contract_address,
+            contract_address: request.contract_address.to_lowercase(),
             result: response.result.clone().unwrap()
         };
         // Add to database called 'evmos'
